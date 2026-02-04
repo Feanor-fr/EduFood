@@ -1,50 +1,60 @@
 <#import "../layout.ftlh" as home>
 <@home.layout>
 
-    <#if restaurants?has_content>
+    <div class="container">
 
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div style="width: 280px;"></div>
+    <div class="mb-4">
 
-            <!-- Форма поиска -->
-            <form action="/restaurants" method="get" class="d-flex w-100 w-md-50">
+
+        <div class="d-flex justify-content-center mb-3">
+            <form action="/restaurants" method="get" class="d-flex w-100" style="max-width: 500px;">
                 <input type="text"
                        name="name"
-                       class="form-control me-2"
+                       class="form-control me-2 rounded-pill shadow-sm"
                        placeholder="Поиск по названию ресторана..."
                        value="${(param.name)!''}"
                        aria-label="Поиск ресторана">
-                <button type="submit" class="btn btn-success">Найти</button>
+                <button type="submit" class="btn btn-success rounded-pill px-4">
+                    Найти
+                </button>
             </form>
+        </div>
 
-            <#if totalPages != 1>
+
+        <#if restaurants?has_content && totalPages gt 1>
+            <div class="d-flex justify-content-center">
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-lg mb-0">
                         <li class="page-item <#if currentPage == 0>disabled</#if>">
-                            <a class="page-link text-purple border-purple" href="/restaurants?page=${currentPage - 1}&sort=${sort!}">
+                            <a class="page-link text-purple border-purple"
+                               href="/restaurants?page=${currentPage - 1}&sort=${sort!}">
                                 ←
                             </a>
                         </li>
                         <#list 0..totalPages-1 as p>
                             <li class="page-item <#if p == currentPage>active</#if>">
                                 <a class="page-link
-                            <#if p == currentPage>bg-purple text-white
-                            <#else>text-purple border-purple</#if>"
+                                        <#if p == currentPage>bg-purple text-white border-purple
+                                        <#else>text-purple border-purple</#if>"
                                    href="/restaurants?page=${p}&sort=${sort!}">
                                     ${p + 1}
                                 </a>
                             </li>
                         </#list>
                         <li class="page-item <#if currentPage + 1 == totalPages>disabled</#if>">
-                            <a class="page-link text-purple border-purple" href="/restaurants?page=${currentPage + 1}&sort=${sort!}">
+                            <a class="page-link text-purple border-purple"
+                               href="/restaurants?page=${currentPage + 1}&sort=${sort!}">
                                 →
                             </a>
                         </li>
                     </ul>
                 </nav>
-            </#if>
-        </div>
+            </div>
+        </#if>
 
+    </div>
+
+    <#if restaurants?has_content>
         <div class="row">
             <#list restaurants as r>
                 <div class="col-12 mb-4">

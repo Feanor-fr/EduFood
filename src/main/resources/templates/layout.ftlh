@@ -66,6 +66,7 @@
 
             <div class="collapse navbar-collapse" id="navbarContent">
                 <div class="ms-auto d-flex align-items-center gap-3">
+                    <a href="#" class="btn btn-purple px-4">Корзина</a>
                     <#assign known = SPRING_SECURITY_CONTEXT?? >
                     <#if known>
                         <#assign user = SPRING_SECURITY_CONTEXT.authentication.principal>
@@ -81,7 +82,6 @@
                             </form>
                         </#if>
                     <#else>
-                        <a href="#" class="btn btn-purple px-4">Корзина</a>
                         <a href="/auth/login"  class="btn btn-purple px-4 fw-semibold">Вход</a>
                         <a href="/auth/register" class="btn btn-purple px-4">Регистрация</a>
                     </#if>
