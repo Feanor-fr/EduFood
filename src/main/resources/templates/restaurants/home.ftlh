@@ -63,7 +63,7 @@
                             <h5 class="card-title text-purple">${r.name}</h5>
                             <p class="card-text text-secondary">${r.description}</p>
                             <div class="mt-auto text-end">
-                                <a href="#" class="btn btn-outline-success">Подробнее</a>
+                                <a href="/restaurants/${r.id}" class="btn btn-outline-success">Подробнее</a>
                             </div>
                         </div>
                     </div>

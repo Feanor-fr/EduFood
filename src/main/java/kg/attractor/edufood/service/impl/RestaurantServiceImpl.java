@@ -1,6 +1,7 @@
 package kg.attractor.edufood.service.impl;
 
 import kg.attractor.edufood.dto.RestaurantDto;
+import kg.attractor.edufood.exceptions.RestaurantNotFoundException;
 import kg.attractor.edufood.model.Restaurant;
 import kg.attractor.edufood.repository.RestaurantRepository;
 import kg.attractor.edufood.service.RestaurantService;
@@ -16,6 +17,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService{
     private final RestaurantRepository repository;
+
+    @Override
+    public RestaurantDto getRestaurantById(Integer id){
+
+        return repository.findById(id)
+                .map(ConvertHelper::convertToRestaurantDto)
+                .orElseThrow(RestaurantNotFoundException::new);
+    }
 
     @Override
     public Page<RestaurantDto> showMainPage(Integer page, Integer size, String name){
