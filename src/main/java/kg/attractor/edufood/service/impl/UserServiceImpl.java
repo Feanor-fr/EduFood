@@ -2,6 +2,7 @@ package kg.attractor.edufood.service.impl;
 
 import kg.attractor.edufood.dto.UserDto;
 import kg.attractor.edufood.exceptions.UserAlreadyExistsException;
+import kg.attractor.edufood.exceptions.UserNotFoundException;
 import kg.attractor.edufood.model.User;
 import kg.attractor.edufood.repository.UserRepository;
 import kg.attractor.edufood.service.RoleService;
@@ -30,5 +31,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         repository.saveAndFlush(user);
+    }
+
+    @Override
+    public UserDto getUserByEmail(String email) {
+
+        return repository.findById(email)
+                .map(ConvertHelper::convertToUserDto)
+                .orElseThrow(UserNotFoundException::new);
     }
 }

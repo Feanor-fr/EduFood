@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorizeRequest -> authorizeRequest
+                                .requestMatchers(HttpMethod.GET, "/users/").hasAuthority("User")
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/").permitAll()

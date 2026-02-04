@@ -4,4 +4,6 @@ import kg.attractor.edufood.dto.UserDto;
 
 public interface UserService {
     void create(UserDto userDto);
+
+    UserDto getUserByEmail(String email);
 }
