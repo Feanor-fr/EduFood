@@ -17,11 +17,15 @@ public class User {
 
     @Id
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private Boolean enabled;
 
     @ManyToOne
-    @JoinColumn(name = "ROLE_NAME")
+    @JoinColumn(name = "ROLE_NAME", nullable = false)
     private  Role role;
 
     @OneToMany(mappedBy = "customer")

@@ -17,10 +17,14 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(nullable = false)
     private Double totalSum;
+
+    @Column(nullable = false)
     private LocalDate createdDate;
 
     @ManyToOne
-    @JoinColumn(name = "CUSTOMER")
+    @JoinColumn(name = "CUSTOMER", nullable = false)
     private User customer;
 }
