@@ -10,11 +10,11 @@
             <form action="/restaurants" method="get" class="d-flex w-100" style="max-width: 500px;">
                 <input type="text"
                        name="name"
-                       class="form-control me-2 rounded-pill shadow-sm"
+                       class="form-control me-2  shadow-sm border-success"
                        placeholder="Поиск по названию ресторана..."
                        value="${(param.name)!''}"
                        aria-label="Поиск ресторана">
-                <button type="submit" class="btn btn-success rounded-pill px-4">
+                <button type="submit" class="btn btn-success  px-4">
                     Найти
                 </button>
             </form>

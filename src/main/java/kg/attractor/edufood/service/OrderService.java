@@ -5,4 +5,6 @@ import org.springframework.data.domain.Page;
 
 public interface OrderService {
     Page<OrderDto> getOrdersByCustomer(String customer, Integer page, Integer size);
+
+    void create(String cartCookie);
 }

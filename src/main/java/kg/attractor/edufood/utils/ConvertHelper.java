@@ -1,13 +1,12 @@
 package kg.attractor.edufood.utils;
 
-import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.OrderDto;
-import kg.attractor.edufood.dto.RestaurantDto;
-import kg.attractor.edufood.dto.UserDto;
+import kg.attractor.edufood.dto.*;
 import kg.attractor.edufood.model.Dish;
 import kg.attractor.edufood.model.Order;
 import kg.attractor.edufood.model.Restaurant;
 import kg.attractor.edufood.model.User;
+
+import java.time.LocalDate;
 
 public class ConvertHelper {
 
@@ -50,6 +49,7 @@ public class ConvertHelper {
                         .id(dish.getId())
                         .name(dish.getName())
                         .price(dish.getPrice())
+                        .restaurantName(dish.getRestaurant().getName())
                         .build();
     }
 
@@ -60,6 +60,24 @@ public class ConvertHelper {
                         .id(order.getId())
                         .totalSum(order.getTotalSum())
                         .createdDate(order.getCreatedDate())
+                        .build();
+    }
+
+    public static Order convertToOrder(User user, Double totalSum){
+
+        return
+                Order.builder()
+                        .customer(user)
+                        .totalSum(totalSum)
+                        .createdDate(LocalDate.now())
+                        .build();
+    }
+
+    public static CartItemDto convertToCartItemDto(DishDto dish, Integer quantity){
+        return
+                CartItemDto.builder()
+                        .dish(dish)
+                        .quantity(quantity)
                         .build();
     }
 }

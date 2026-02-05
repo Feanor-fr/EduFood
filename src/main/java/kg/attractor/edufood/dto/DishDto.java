@@ -14,4 +14,5 @@ public class DishDto {
     private Integer id;
     private String name;
     private Double price;
+    private String restaurantName;
 }

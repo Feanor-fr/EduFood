@@ -27,17 +27,20 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/", true)
 
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(PathPatternRequestMatcher.withDefaults().matcher( "/auth/logout"))
                         .logoutSuccessUrl("/")
+                        .deleteCookies("cart")
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorizeRequest -> authorizeRequest
                                 .requestMatchers(HttpMethod.GET, "/users/").hasAuthority("User")
+                                .requestMatchers(HttpMethod.POST, "/cart/checkout").authenticated()
+                                .requestMatchers("/cart/**").permitAll()
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/").permitAll()

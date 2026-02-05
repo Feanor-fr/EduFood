@@ -5,4 +5,6 @@ import org.springframework.data.domain.Page;
 
 public interface DishService {
     Page<DishDto> getDishByRestaurantProfile(Integer restaurantId, Integer page, Integer size);
+
+    DishDto findDishById(Integer dishId);
 }

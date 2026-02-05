@@ -66,7 +66,14 @@
 
             <div class="collapse navbar-collapse" id="navbarContent">
                 <div class="ms-auto d-flex align-items-center gap-3">
-                    <a href="#" class="btn btn-purple px-4">Корзина</a>
+
+                    <a href="/cart" class="btn btn-purple px-4">
+                        Корзина
+                        <#if cartCount?? && cartCount gt 0>
+                            <span class="badge bg-success">${cartCount}</span>
+                        </#if>
+                    </a>
+
                     <#assign known = SPRING_SECURITY_CONTEXT?? >
                     <#if known>
                         <#assign user = SPRING_SECURITY_CONTEXT.authentication.principal>

@@ -71,7 +71,19 @@
                                     <p class="text-muted mb-0"><strong>Цена:</strong> ${dish.price} сом</p>
                                 </div>
                                 <div class="mt-3 mt-md-0">
-                                    <a href="#" class="btn btn-outline-purple btn-sm rounded-pill">Заказать</a>
+                                    <form method="post" action="/cart/add">
+                                        <input type="hidden" name="dishId" value="${dish.id}">
+                                        <button class="btn btn-outline-purple btn-sm">
+                                            В корзину
+                                        </button>
+                                        <#if _csrf??>
+                                            <input
+                                                    type="hidden"
+                                                    name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                                    value="${(_csrf.token)!'csrf-token'}"
+                                            >
+                                        </#if>
+                                    </form>
                                 </div>
                             </div>
                         </div>
