@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -36,12 +35,10 @@ public class GlobalControllerAdvice {
     }
 
     @ModelAttribute("cartCount")
-    public Integer getCartCount(@CookieValue(value = "cart", required = false) String cartCookie) {
-        if (cartCookie == null || cartCookie.isBlank()) {
-            return 0;
-        }
-        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartCookie);
-
+    public Integer getCartCount(HttpServletRequest request) {
+        String cookieName = cartService.getCardOwnerForCookie();
+        String cartValue = cartService.getCookieValue(request, cookieName);
+        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartValue);
         return cartService.countItems(cart);
     }
 }

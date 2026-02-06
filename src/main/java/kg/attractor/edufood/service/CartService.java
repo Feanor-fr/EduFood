@@ -1,5 +1,7 @@
 package kg.attractor.edufood.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import kg.attractor.edufood.dto.CartItemDto;
 
 import java.util.List;
@@ -20,4 +22,14 @@ public interface CartService {
     Double calculateTotal(List<CartItemDto> items);
 
     Integer countItems(Map<Integer, Integer> cart);
+
+    String getCardOwnerForCookie();
+
+    String getCookieValue(HttpServletRequest request, String name);
+
+    String mergeAndClearAnonymousCart(HttpServletRequest request, HttpServletResponse response, String personalName);
+
+    void saveCartCookie(HttpServletResponse response, String name, Map<Integer, Integer> cart);
+
+    void mergeCartsOnLogin(HttpServletRequest request, HttpServletResponse response);
 }

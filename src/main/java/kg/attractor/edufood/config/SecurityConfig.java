@@ -1,5 +1,6 @@
 package kg.attractor.edufood.config;
 
+import kg.attractor.edufood.handler.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.web.servlet.util.matcher.PathPatternRequestM
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
+    private final LoginSuccessHandler loginSuccessHandler;
 
 
     @Bean
@@ -27,14 +29,14 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler)
 
                         .failureUrl("/auth/login?error=true")
                         .permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(PathPatternRequestMatcher.withDefaults().matcher( "/auth/logout"))
                         .logoutSuccessUrl("/")
-                        .deleteCookies("cart")
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
                 )
                 .authorizeHttpRequests(authorizeRequest -> authorizeRequest

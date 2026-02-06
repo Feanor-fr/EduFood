@@ -1,6 +1,7 @@
 package kg.attractor.edufood.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kg.attractor.edufood.dto.CartItemDto;
 import kg.attractor.edufood.service.CartService;
@@ -22,11 +23,14 @@ public class CartController {
 
     @GetMapping
     public String showCart(
-            @CookieValue(value = "cart", required = false) String cartCookie,
+            HttpServletRequest request,
+            HttpServletResponse response,
             Model model
     ) {
-        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartCookie);
+        String cookieName = cartService.getCardOwnerForCookie();
+        String cartValue= cartService.getCookieValue(request, cookieName);
 
+        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartValue);
         List<CartItemDto> items = cartService.buildCartItems(cart);
         Double total = cartService.calculateTotal(items);
 
@@ -39,44 +43,46 @@ public class CartController {
     @PostMapping("/add")
     public String addToCart(
             @RequestParam Integer dishId,
-            @CookieValue(value = "cart", required = false) String cartCookie,
+            HttpServletRequest request,
             HttpServletResponse response
     ) {
-        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartCookie);
+        String cookieName = cartService.getCardOwnerForCookie();
+        String cartValue = cartService.getCookieValue(request, cookieName);
+
+        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartValue);
         cartService.addDish(cart, dishId);
 
-        Cookie cookie = new Cookie("cart", cartService.writeCartToCookie(cart));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
+        cartService.saveCartCookie(response, cookieName, cart);
         return "redirect:/cart";
     }
 
     @PostMapping("/remove")
     public String removeFromCart(
             @RequestParam Integer dishId,
-            @CookieValue(value = "cart", required = false) String cartCookie,
+            HttpServletRequest request,
             HttpServletResponse response
     ) {
-        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartCookie);
+        String cookieName = cartService.getCardOwnerForCookie();
+        String cartValue = cartService.getCookieValue(request, cookieName);
+
+        Map<Integer, Integer> cart = cartService.readCartFromCookie(cartValue);
         cartService.removeDish(cart, dishId);
 
-        Cookie cookie = new Cookie("cart", cartService.writeCartToCookie(cart));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-
+        cartService.saveCartCookie(response, cookieName, cart);
         return "redirect:/cart";
     }
 
     @PostMapping("/checkout")
-    public String checkout(
-            @CookieValue(value = "cart", required = false) String cartCookie,
-            HttpServletResponse response
+    public String checkout(HttpServletRequest request,
+                           HttpServletResponse response
     ) {
-        if (cartCookie != null && !cartCookie.isBlank()) {
-            orderService.create(cartCookie);
+        String cookieName = cartService.getCardOwnerForCookie();
+        String cartValue = cartService.getCookieValue(request, cookieName);
 
-            Cookie cookie = new Cookie("cart", "");
+        if (cartValue != null && !cartValue.isBlank()) {
+            orderService.create(cartValue);
+
+            Cookie cookie = new Cookie(cookieName, "");
             cookie.setPath("/");
             cookie.setMaxAge(0);
             response.addCookie(cookie);
